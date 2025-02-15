@@ -1,1 +1,1 @@
-# codequest2025-deepseek-chatbot
+# codequest2025-llm-chatbot
