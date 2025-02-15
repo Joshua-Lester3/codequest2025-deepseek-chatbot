@@ -1,11 +1,16 @@
-from flask import Flask
+from flask import Flask, request
+from flask_cors import CORS
 import subprocess
 
 app = Flask(__name__)
+CORS(app)
 
-@app.route("/chat/<message>")
-def chat(message):
-  cmd = ["ollama", "run", "deepseek-r1:1.5b", message]
+@app.route("/chat")
+def chat():
+  isLlama = str(request.args.get('isLlama', 'true')).lower() == 'true'
+  message = request.args.get('message', 'hi')
+  model = "llama3" if isLlama else "deepseek-r1:1.5b"
+  cmd = ["ollama", "run", model, message]
   try:
     response = subprocess.check_output(cmd, text=True)
     return response
