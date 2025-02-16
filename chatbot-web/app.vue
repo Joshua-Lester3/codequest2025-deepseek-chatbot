@@ -4,13 +4,13 @@
       <v-card class="mx-auto my-10" color="indigo-darken-2" min-width="200" max-width="500" min-height="300">
         <v-switch class="position-absolute left-0 top-0 ml-4" v-model="isLlama" color="secondary"
           :label="isLlama ? 'Llama3' : 'DeepSeek'" v-slot:prepend="stuff" />
+        <v-card v-if="loading" class="my-2" color="tertiary">
+          <v-progress-linear class="" indeterminate />
+        </v-card>
         <v-virtual-scroll ref="virtualScroller" class="mt-10 ma-5" height="190" :items="chatMessages">
           <template v-slot:default="{ item }">
             <v-card :class="`my-2 ${item.isUser ? 'ml-20' : 'mr-20'}`" :color="item.isUser ? 'secondary' : 'tertiary'">
               <v-card-text>{{ item.message }}</v-card-text>
-            </v-card>
-            <v-card v-if="loading" class="my-2" color="tertiary">
-              <v-progress-linear class="" indeterminate />
             </v-card>
           </template>
         </v-virtual-scroll>
@@ -56,8 +56,14 @@ async function onKeyup(event: KeyboardEvent) {
 
 async function sendMessage() {
   try {
-    let url = `http://127.0.0.1:5000/chat?isLlama=${isLlama.value}&message=${chatMessages.value[chatMessages.value.length - 1].message}`;
-    let response = await axios.get(url);
+    let message = chatMessages.value[chatMessages.value.length - 1].message;
+    let url = 'http://127.0.0.1:5000/chat';
+    let response = await axios.get(url, {
+      params: {
+        message: message,
+        isLlama: isLlama.value,
+      }
+    });
     let newMessage = new Message(response.data, false);
     chatMessages.value.push(newMessage);
   } catch (error) {

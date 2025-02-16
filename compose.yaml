@@ -1,0 +1,25 @@
+services:
+  frontend:
+    image: cqregistry.azurecr.io/samples/web
+    ports:
+      - 3000:3000
+    networks:
+      - app
+
+  backend:
+    image: cqregistry.azurecr.io/samples/api
+    ports:
+      - 5000:5000
+    networks:
+      - app
+
+  ollama:
+    image: cqregistry.azurecr.io/samples/ollama
+    ports:
+      - 11434:11434
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge
