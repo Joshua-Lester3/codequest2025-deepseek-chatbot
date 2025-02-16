@@ -1,0 +1,15 @@
+services:
+  frontend:
+    image: cqregistry.azurecr.io/samples/web
+    ports:
+      - 3000:3000
+
+  backend:
+    image: cqregistry.azurecr.io/samples/api
+    ports:
+      - 5000:5000
+
+  ollama:
+    image: cqregistry.azurecr.io/samples/ollama
+    ports:
+      - 11434:11434

@@ -57,7 +57,7 @@ async function onKeyup(event: KeyboardEvent) {
 async function sendMessage() {
   try {
     let message = chatMessages.value[chatMessages.value.length - 1].message;
-    let url = 'http://127.0.0.1:5000/chat';
+    let url = 'http://backend:5000/chat';
     let response = await axios.get(url, {
       params: {
         message: message,
